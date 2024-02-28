@@ -172,7 +172,11 @@ if __name__ == "__main__":
     print('current device:', device)
     
     # 加载预训练的ResNet50模型
-    model = MyResNet().to(device)
+    from torchvision.models.resnet import ResNet50_Weights
+    model = models.resnet50(weights=ResNet50_Weights.DEFAULT)
+    num_ftrs = model.fc.in_features
+    model.fc = nn.Linear(num_ftrs, 6)
+    model = model.to(device)
     
     # 定义损失函数和优化器
     criterion = nn.CrossEntropyLoss()
