@@ -2,6 +2,7 @@ from torch.utils.data import Dataset
 from PIL import Image
 import os
 import random
+import json
 
 class ImageDataset(Dataset):
     
@@ -48,7 +49,7 @@ class ImageDataset(Dataset):
                 sub_dir = dirs[idx]
                 img_names = os.listdir(os.path.join(root, sub_dir))
                 img_names = list(filter(lambda x: x.endswith('.png'), img_names))
-                self.label_name[sub_dir] = idx
+                self.label_name[idx] = sub_dir
                 
                 # 遍历图片
                 for i in range(len(img_names)):
@@ -59,6 +60,12 @@ class ImageDataset(Dataset):
         return data_info
     
     
+    def save_label(self):
+        with open('./model/label_map.json', 'w') as f:
+            # 将字典保存为JSON格式的文件
+            json.dump(self.label_name, f)
+    
+    
 if __name__ == '__main__':
     from torchvision import transforms
     transform=transforms.Compose([
@@ -66,4 +73,5 @@ if __name__ == '__main__':
         transforms.Normalize((0.1307,), (0.3081,))
     ])
     dataset = ImageDataset('C:/Custom/DataSet/WildLife', transform=transform)
-    print(dataset[0][0].shape)
+    print(dataset.label_name)
+    dataset.save_label()
