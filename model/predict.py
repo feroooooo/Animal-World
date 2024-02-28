@@ -7,19 +7,19 @@ import json
 from PIL import Image
 
 class Predict():
-    def __init__(self, path):
-        self.path = path
+    def __init__(self, weight_path, label_map):
         model = models.resnet50()
 
         # 修改最后一层以匹配六个类别
         num_ftrs = model.fc.in_features
         model.fc = nn.Linear(num_ftrs, 6)
         
-        self.model = self.load_model(model)
+        self.model = self.load_model(model, weight_path)
+        self.label_map = label_map
     
-    def load_model(self, model):
+    def load_model(self, model, weight_path):
         # 检查点文件路径
-        checkpoint_path = 'checkpoint/best_epoch30.pth'
+        checkpoint_path = weight_path
 
         # 确保文件存在
         if os.path.isfile(checkpoint_path):
@@ -39,7 +39,7 @@ class Predict():
             print(f"No checkpoint found at '{checkpoint_path}'")
         return model
     
-    def predict(self):
+    def predict(self, path=None, img=None):
         # 图片预处理流程，这需要根据您模型训练时使用的预处理相匹配
         transform = transforms.Compose([
             transforms.Resize((224, 224)),  # 示例尺寸，根据需要调整
@@ -48,16 +48,20 @@ class Predict():
         ])
 
         # 加载图片
-        img_path = self.path
-        image = Image.open(img_path)
+        if path != None:
+            img_path = path
+            image = Image.open(img_path)
+        elif img != None:
+            pass
+        else:
+            return "please input image"
 
         # 预处理图片
         image = transform(image)
 
         # 增加一个批次维度，因为PyTorch模型通常期望批次输入
         image = image.unsqueeze(0)
-        # 打开之前保存的JSON格式的文件
-        with open('./model/label_map.json', 'r') as f:
+        with open(self.label_map, 'r') as f:
             # 从文件加载数据回字典
             label_map = json.load(f)
 
@@ -75,5 +79,5 @@ class Predict():
     
     
 if __name__ == '__main__':
-    predictor = Predict("C:/Custom/DataSet/WildLife/cheetah/00000000_224resized.png")
-    print(predictor.predict())
+    predict = Predict('checkpoint/best_epoch30.pth', './model/label_map.json')
+    print(predict.predict("C:/Custom/DataSet/WildLife/cheetah/00000000_224resized.png"))
