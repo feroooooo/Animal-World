@@ -8,7 +8,7 @@ from torch.utils.data import DataLoader, random_split, WeightedRandomSampler
 from torchvision import transforms
 from torch.utils.tensorboard import SummaryWriter
 from image_dataset import ImageDataset
-from model import ResNet
+from model import MyResNet
 
 # TensorBoard
 path = 'logs'
@@ -120,13 +120,21 @@ if __name__ == "__main__":
     time_start = time.perf_counter()
     color_print("Infomations:")
     # 初始化数据集
-    transform=transforms.Compose([
+    train_transform = transforms.Compose([
+        transforms.RandomHorizontalFlip(),  # 以0.5的概率水平翻转图片
+        transforms.RandomRotation(10),  # 随机旋转图片，范围为-10到10度
+        transforms.ColorJitter(brightness=0.2, contrast=0.2, saturation=0.2),  # 随机调整图片的亮度、对比度和饱和度
+        transforms.RandomAffine(degrees=0, translate=(0.1, 0.1), scale=(0.9, 1.1)),  # 使用随机仿射变换
         transforms.ToTensor(),
         transforms.Normalize((0.1307,), (0.3081,))
     ])
-    data_dir = 'C:/Custom/DataSet/WildLife'
+    base_transform = transforms.Compose([
+        transforms.ToTensor(),
+        transforms.Normalize((0.1307,), (0.3081,))
+    ])
+    data_dir = 'E:\Data\WildLife'
     
-    dataset = ImageDataset(data_dir, transform=transform)
+    dataset = ImageDataset(data_dir, transform=train_transform)
 
     # 数据集大小
     dataset_size = len(dataset)
@@ -139,6 +147,8 @@ if __name__ == "__main__":
 
     # # 数据集切分
     train_dataset, validation_dataset, test_dataset = random_split(dataset, [train_size, validation_size, test_size])
+    
+    # validation_dataset.transform = test_dataset.transform =  base_transform
 
     
     # 类别不平衡
@@ -162,12 +172,7 @@ if __name__ == "__main__":
     print('current device:', device)
     
     # 加载预训练的ResNet50模型
-    from torchvision.models.resnet import ResNet50_Weights
-    model = models.resnet50(weights=ResNet50_Weights.DEFAULT).to(device)
-
-    # 修改最后一层以匹配六个类别
-    num_ftrs = model.fc.in_features
-    model.fc = nn.Linear(num_ftrs, 6)
+    model = MyResNet().to(device)
     
     # 定义损失函数和优化器
     criterion = nn.CrossEntropyLoss()

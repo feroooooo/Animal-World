@@ -1,15 +1,26 @@
 from flask import Flask, request, jsonify
 from predict import Predict
+from PIL import Image
+import io
+from flask_cors import CORS
 
-predict = Predict('checkpoint/best_epoch30.pth', './model/label_map.json')
+predict = Predict('./model/weight.pth', './model/label_map.json')
 
 
 app = Flask(__name__)
+CORS(app)
 
 @app.route('/predict', methods=['POST'])
 def classify():
-    data = request.get_json()
-    prediction = predict.predict("C:/Custom/DataSet/WildLife/cheetah/00000000_224resized.png")
+    if 'file' not in request.files:
+        return 'No file part', 400
+    
+    file = request.files['file']
+    # 将上传的图片文件转换为字节流
+    img_bytes = file.read()
+    img = Image.open(io.BytesIO(img_bytes)).convert('RGB')
+
+    prediction = predict.predict(image=img)
     return jsonify({'prediction': prediction})
 
 

@@ -39,7 +39,7 @@ class Predict():
             print(f"No checkpoint found at '{checkpoint_path}'")
         return model
     
-    def predict(self, path=None, img=None):
+    def predict(self, path=None, image=None):
         # 图片预处理流程，这需要根据您模型训练时使用的预处理相匹配
         transform = transforms.Compose([
             transforms.Resize((224, 224)),  # 示例尺寸，根据需要调整
@@ -50,11 +50,9 @@ class Predict():
         # 加载图片
         if path != None:
             img_path = path
-            image = Image.open(img_path)
-        elif img != None:
-            pass
-        else:
-            return "please input image"
+            image = Image.open(img_path).convert('RGB')
+        elif image == None:
+            "please input image"
 
         # 预处理图片
         image = transform(image)
