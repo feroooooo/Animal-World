@@ -113,7 +113,7 @@ def color_print(str):
 
 # 超参数配置
 epoch_num = 150
-batch_size = 4
+batch_size = 32
 learning_rate = 0.005
 
 if __name__ == "__main__":
