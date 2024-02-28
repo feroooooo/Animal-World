@@ -1,3 +1,4 @@
 checkpoint
 logs
 __pycache__
+weight.pth
