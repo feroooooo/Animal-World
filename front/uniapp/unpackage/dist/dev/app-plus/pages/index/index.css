@@ -1,0 +1,44 @@
+
+uni-swiper{
+	width:100%;
+	height:200px;
+uni-swiper-item{
+		width:100%;
+		height:100%;
+		background: white;
+}
+}
+.mainFunction {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.upld-container {
+  width: 50vw;
+  height: 150px;
+  border: 1px dashed #ccc;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+.upld-content {
+  position: flex;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+.upld-img {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+.upld-text {
+  font-size: 16px;
+  color: #666;
+  text-align: center;
+}
