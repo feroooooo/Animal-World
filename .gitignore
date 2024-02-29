@@ -2,3 +2,6 @@ checkpoint
 logs
 __pycache__
 weight.pth
+.hbuilderx
+.vite
+unpackage
