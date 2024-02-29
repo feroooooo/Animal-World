@@ -24,5 +24,9 @@ def classify():
     return jsonify({'prediction': prediction})
 
 
+@app.route('/hello', methods=['GET'])
+def hello():
+    return 'hello'
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)

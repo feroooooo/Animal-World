@@ -24,7 +24,8 @@ class Predict():
         # 确保文件存在
         if os.path.isfile(checkpoint_path):
             # 加载保存的状态字典
-            checkpoint = torch.load(checkpoint_path)
+            device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+            checkpoint = torch.load(checkpoint_path, map_location=torch.device(device))
             
             # 加载模型权重
             model.load_state_dict(checkpoint['model'])
