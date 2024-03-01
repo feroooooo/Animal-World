@@ -16,9 +16,12 @@ def classify():
         return 'No file part', 400
     
     file = request.files['file']
+    filepath = './model/image.jpg'
+    file.save(filepath)
+    img = Image.open(filepath).convert('RGB')
     # 将上传的图片文件转换为字节流
-    img_bytes = file.read()
-    img = Image.open(io.BytesIO(img_bytes)).convert('RGB')
+    # img_bytes = file.read()
+    # img = Image.open(io.BytesIO(img_bytes)).convert('RGB')
 
     prediction = predict.predict(image=img)
     return jsonify({'prediction': prediction})
