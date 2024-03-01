@@ -15,13 +15,16 @@ def classify():
     if 'file' not in request.files:
         return 'No file part', 400
     
-    file = request.files['file']
-    filepath = './model/image.jpg'
-    file.save(filepath)
-    img = Image.open(filepath).convert('RGB')
-    # 将上传的图片文件转换为字节流
-    # img_bytes = file.read()
-    # img = Image.open(io.BytesIO(img_bytes)).convert('RGB')
+    try:
+        file = request.files['file']
+        filepath = './model/image.jpg'
+        file.save(filepath)
+        img = Image.open(filepath).convert('RGB')
+        # 将上传的图片文件转换为字节流
+        # img_bytes = file.read()
+        # img = Image.open(io.BytesIO(img_bytes)).convert('RGB')
+    except:
+        return 'error', 400
 
     prediction = predict.predict(image=img)
     return jsonify({'prediction': prediction})
