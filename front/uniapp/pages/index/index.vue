@@ -20,7 +20,6 @@
 		</button>
 		<view>{{prediction}}</view>
 	</view>
-  <bottomBar></bottomBar>
 </template>
 
 <script setup>
@@ -31,44 +30,42 @@
 	let prediction=ref("");
 	
     function predict(){
-		chooseImage();
-		uploadImage();
-	}
-	
-	function uploadImage(){
-		if (!imageUrl) {
-		uni.showToast({
-		  title: '请先选择图片',
-		  icon: 'none'
-		});
-		return;
-		}
-		uni.uploadFile({
-			url:backUrl,
-			filePath: imageUrl.value,
-			name:"file",
-			success: (uploadFileRes) => {
-				console.log(JSON.parse(uploadFileRes.data));
-				prediction.value = JSON.parse(uploadFileRes.data).prediction;
+		uni.chooseImage({
+			count: 1,
+			sizeType: ['compressed'],
+			sourceType: ['album', 'camera'],
+			success: res => {				
+				imageUrl.value = res.tempFilePaths[0];
+				console.log("FilePath:"+imageUrl.value);
+				
+				uni.uploadFile({
+					url:backUrl,
+					filePath: imageUrl.value,
+					name:"file",
+					success: (uploadFileRes) => {
+						console.log(JSON.parse(uploadFileRes.data));
+						prediction.value = JSON.parse(uploadFileRes.data).prediction;
+						
+					},
+					fail: (uploadFileErr) => {
+					console.log(uploadFileErr);
+						uni.showToast({
+							title: '上传失败',
+							icon: 'none'
+						});
+					}
+				});
 			},
-			fail: (uploadFileErr) => {
-			console.log(uploadFileErr);
-			// 处理上传失败的情况
+			fail: res=>{
+				uni.showToast({
+					title: '请先选择图片',
+					icon: 'none'
+				});
+				console.log(res);
+				return;
 			}
-		})
+		});
 	}
-	
-	function chooseImage() {
-	uni.chooseImage({
-		count: 1,
-		sizeType: ['compressed'],
-		sourceType: ['album', 'camera'],
-		success: res => {
-			imageUrl.value = res.tempFilePaths[0];
-			console.log("FilePath:"+imageUrl.value);
-		}
-	});
-}
 </script>
 
 <style>
