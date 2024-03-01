@@ -6,3 +6,5 @@ weight.pth
 .vite
 unpackage
 *.jpg
+.idea
+target
