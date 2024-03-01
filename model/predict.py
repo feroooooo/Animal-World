@@ -7,7 +7,7 @@ import json
 from PIL import Image
 
 class Predict():
-    def __init__(self, weight_path, label_map):
+    def __init__(self, weight_path, label_map, language_map):
         model = models.resnet50()
 
         # 修改最后一层以匹配六个类别
@@ -16,6 +16,7 @@ class Predict():
         
         self.model = self.load_model(model, weight_path)
         self.label_map = label_map
+        self.language_map = language_map
     
     def load_model(self, model, weight_path):
         # 检查点文件路径
@@ -61,8 +62,12 @@ class Predict():
         # 增加一个批次维度，因为PyTorch模型通常期望批次输入
         image = image.unsqueeze(0)
         with open(self.label_map, 'r') as f:
-            # 从文件加载数据回字典
+            # 从文件加载标签字典
             label_map = json.load(f)
+        print(self.language_map)
+        with open(self.language_map, 'r', encoding='utf8') as f:
+            # 从文件加载语言字典
+            language_map = json.load(f)
 
         
         self.model.eval()
@@ -74,9 +79,9 @@ class Predict():
             # 输出处理，获取预测结果
             _, predicted = torch.max(outputs, 1)
             # 返回Predicted class
-            return label_map[str(predicted.item())]
+            return language_map[label_map[str(predicted.item())]]
     
     
 if __name__ == '__main__':
-    predict = Predict('checkpoint/best_epoch30.pth', './model/label_map.json')
+    predict = Predict('checkpoint/best_epoch30.pth', './model/label_map.json', './model/language_map.json')
     print(predict.predict("C:/Custom/DataSet/WildLife/cheetah/00000000_224resized.png"))
