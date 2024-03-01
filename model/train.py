@@ -125,10 +125,12 @@ if __name__ == "__main__":
         transforms.RandomRotation(10),  # 随机旋转图片，范围为-10到10度
         transforms.ColorJitter(brightness=0.2, contrast=0.2, saturation=0.2),  # 随机调整图片的亮度、对比度和饱和度
         transforms.RandomAffine(degrees=0, translate=(0.1, 0.1), scale=(0.9, 1.1)),  # 使用随机仿射变换
+        transforms.Resize((224, 224)),
         transforms.ToTensor(),
         transforms.Normalize((0.1307,), (0.3081,))
     ])
     base_transform = transforms.Compose([
+        transforms.Resize((224, 224)),
         transforms.ToTensor(),
         transforms.Normalize((0.1307,), (0.3081,))
     ])
