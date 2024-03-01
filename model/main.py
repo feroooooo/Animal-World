@@ -27,6 +27,7 @@ def classify():
         return 'error', 400
 
     prediction = predict.predict(image=img)
+    print(prediction)
     return jsonify({'prediction': prediction})
 
 

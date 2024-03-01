@@ -64,7 +64,6 @@ class Predict():
         with open(self.label_map, 'r') as f:
             # 从文件加载标签字典
             label_map = json.load(f)
-        print(self.language_map)
         with open(self.language_map, 'r', encoding='utf8') as f:
             # 从文件加载语言字典
             language_map = json.load(f)
