@@ -4,7 +4,7 @@ from PIL import Image
 import io
 from flask_cors import CORS
 
-predict = Predict('./model/weight.pth', './model/label_map.json', './model/language_map.json')
+predict = Predict('./model/weight.pth', './model/label_map.json', './model/language_map.json', './model/weight_is_animal.pth')
 
 
 app = Flask(__name__)

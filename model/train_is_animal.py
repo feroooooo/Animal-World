@@ -8,7 +8,6 @@ from torch.utils.data import DataLoader, random_split, WeightedRandomSampler
 from torchvision import transforms
 from torch.utils.tensorboard import SummaryWriter
 from image_dataset import ImageDataset
-from model import MyResNet
 
 # TensorBoard
 path = 'logs'
@@ -135,7 +134,7 @@ if __name__ == "__main__":
         transforms.Normalize((0.1307,), (0.3081,))
     ])
     # dataset
-    data_dir = 'E:\Data\WildLife'
+    data_dir = 'C:/Custom/DataSet/AnimalOrNot'
     
     dataset = ImageDataset(data_dir, transform=train_transform)
 

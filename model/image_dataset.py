@@ -48,7 +48,7 @@ class ImageDataset(Dataset):
             for idx in range(len(dirs)):
                 sub_dir = dirs[idx]
                 img_names = os.listdir(os.path.join(root, sub_dir))
-                img_names = list(filter(lambda x: x.endswith('.png'), img_names))
+                img_names = list(filter(lambda x: x.endswith('.jpg'), img_names))
                 self.label_name[idx] = sub_dir
                 
                 # 遍历图片
@@ -73,5 +73,7 @@ if __name__ == '__main__':
         transforms.Normalize((0.1307,), (0.3081,))
     ])
     dataset = ImageDataset('C:/Custom/DataSet/WildLife', transform=transform)
+    # dataset = ImageDataset('C:/Custom/DataSet/AnimalOrNot', transform=transform)
+    print(len(dataset))
     print(dataset.label_name)
     dataset.save_label()

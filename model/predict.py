@@ -7,14 +7,19 @@ import json
 from PIL import Image
 
 class Predict():
-    def __init__(self, weight_path, label_map, language_map):
+    def __init__(self, weight_path, label_map, language_map, weight_is_animal_path):
         model = models.resnet50()
 
         # 修改最后一层以匹配六个类别
         num_ftrs = model.fc.in_features
         model.fc = nn.Linear(num_ftrs, 6)
         
+        model_is_animal = models.resnet50()
+        num_ftrs = model_is_animal.fc.in_features
+        model_is_animal.fc = nn.Linear(num_ftrs, 2)
+        
         self.model = self.load_model(model, weight_path)
+        self.model_is_animal = self.load_model(model_is_animal, weight_is_animal_path)
         self.label_map = label_map
         self.language_map = language_map
     
@@ -61,6 +66,19 @@ class Predict():
 
         # 增加一个批次维度，因为PyTorch模型通常期望批次输入
         image = image.unsqueeze(0)
+        
+        self.model_is_animal.eval()
+        with torch.no_grad():
+            # 进行预测
+            outputs = self.model_is_animal(image)
+            
+            # 输出处理，获取预测结果
+            _, predicted = torch.max(outputs, 1)
+            # 返回Predicted class
+            if predicted.item() == 0:
+                return '非动物'
+        
+        
         with open(self.label_map, 'r') as f:
             # 从文件加载标签字典
             label_map = json.load(f)
@@ -82,5 +100,5 @@ class Predict():
     
     
 if __name__ == '__main__':
-    predict = Predict('checkpoint/best_epoch30.pth', './model/label_map.json', './model/language_map.json')
-    print(predict.predict("C:/Custom/DataSet/WildLife/cheetah/00000000_224resized.png"))
+    predict = Predict('./model/weight.pth', './model/label_map.json', './model/language_map.json', './model/weight_is_animal.pth')
+    print(predict.predict("C:/Custom/DataSet/WildLife/wolf/00000000_224resized.jpg"))

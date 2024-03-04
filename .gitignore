@@ -2,6 +2,7 @@ checkpoint
 logs
 __pycache__
 weight.pth
+weight_is_animal.pth
 .hbuilderx
 .vite
 unpackage
