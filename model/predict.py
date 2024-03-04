@@ -75,6 +75,7 @@ class Predict():
             # 输出处理，获取预测结果
             _, predicted = torch.max(outputs, 1)
             # 返回Predicted class
+            print(predicted.item())
             if predicted.item() == 0:
                 return '非动物'
         

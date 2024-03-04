@@ -28,7 +28,7 @@
 <script setup>
 	import {ref} from "vue";
 
-	const backUrl="http://10.10.25.13:5000/predict";
+	const backUrl="http://10.10.25.32:5000/predict";
 	let imageUrl=ref("");
 	let prediction=ref("");
 	
