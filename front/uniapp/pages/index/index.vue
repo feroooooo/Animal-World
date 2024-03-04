@@ -16,7 +16,7 @@
 		</view>
 		<view class="predict-result" v-show="prediction!==''">
 			<text class="result">识别结果: {{prediction}}</text>
-			<button class="result-btn">查看详情</button>
+			<button class="result-btn" @click="baike">查看详情</button>
 		</view>
 		<button class="predict-btn" @click="predict">
 			<image src="/static/icons/camera.png" class="btn-img" mode="aspectFit"></image>
@@ -74,6 +74,12 @@
 				return;
 			}
 		});
+	}
+	
+	function baike(){
+		// #ifdef H5
+		window.location.href="https://baike.baidu.com/item/" + prediction.value;
+		// #endif
 	}
 </script>
 
