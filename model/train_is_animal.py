@@ -134,7 +134,7 @@ if __name__ == "__main__":
         transforms.Normalize((0.1307,), (0.3081,))
     ])
     # dataset
-    data_dir = 'C:/Custom/DataSet/AnimalOrNot'
+    data_dir = r'E:\Data\Animal\AnimalOrNot'
     
     dataset = ImageDataset(data_dir, transform=train_transform)
 
@@ -147,12 +147,23 @@ if __name__ == "__main__":
     print("validation size:", validation_size)
     print("test size:", test_size)
 
-    # # 数据集切分
+    # 数据集切分
     train_dataset, validation_dataset, test_dataset = random_split(dataset, [train_size, validation_size, test_size])
     
     validation_dataset.transform = test_dataset.transform =  base_transform
-    
-    train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
+
+    # 类别不平衡
+    all_labels = []
+    for _, label in train_dataset:
+        all_labels.append(label)
+    all_labels = torch.tensor(all_labels)
+    class_count = torch.tensor([(all_labels == t).sum() for t in torch.unique(all_labels, sorted=True)])
+
+    class_weights = 1. / class_count.float()  # 计算类权重
+    samples_weights = class_weights[all_labels.long()]  # 每个样本的权重
+    sampler = WeightedRandomSampler(weights=samples_weights, num_samples=len(samples_weights), replacement=True)
+
+    train_loader = DataLoader(train_dataset, batch_size=batch_size, sampler=sampler)
     validation_loader = DataLoader(validation_dataset, batch_size=batch_size, shuffle=False)
     test_loader = DataLoader(test_dataset, batch_size=batch_size, shuffle=False)
     
