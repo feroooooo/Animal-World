@@ -25,10 +25,19 @@ def classify():
         # img = Image.open(io.BytesIO(img_bytes)).convert('RGB')
     except:
         return 'error', 400
+    
+    use_api = True
+    if use_api:
+        import api
+        prediction = api.predict(filepath)
+        print(prediction)
+        return prediction
+    else:
+        prediction = predict.predict(image=img)
+        print(prediction)
+        return jsonify({'prediction': prediction})
+    
 
-    prediction = predict.predict(image=img)
-    print(prediction)
-    return jsonify({'prediction': prediction})
 
 
 @app.route('/hello', methods=['GET'])
