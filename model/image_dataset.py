@@ -60,8 +60,8 @@ class ImageDataset(Dataset):
         return data_info
     
     
-    def save_label(self):
-        with open('./model/label_map.json', 'w') as f:
+    def save_label(self, name):
+        with open(f'./model/{name}_label_map.json', 'w') as f:
             # 将字典保存为JSON格式的文件
             json.dump(self.label_name, f)
     
@@ -72,8 +72,8 @@ if __name__ == '__main__':
         transforms.ToTensor(),
         transforms.Normalize((0.1307,), (0.3081,))
     ])
-    dataset = ImageDataset('C:/Custom/DataSet/WildLife', transform=transform)
-    # dataset = ImageDataset('C:/Custom/DataSet/AnimalOrNot', transform=transform)
+    # dataset = ImageDataset('C:/Custom/DataSet/WildLife', transform=transform)
+    dataset = ImageDataset('C:/Custom/DataSet/AnimalOrNot', transform=transform)
     print(len(dataset))
     print(dataset.label_name)
-    dataset.save_label()
+    dataset.save_label('is_animal')
