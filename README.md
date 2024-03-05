@@ -13,3 +13,7 @@
     - ResNet50
   - 数据集
     - https://www.kaggle.com/datasets/whenamancodes/wild-animals-images
+    - https://www.kaggle.com/datasets/mikhailma/house-rooms-streets-image-dataset
+    - https://www.kaggle.com/datasets/sharansmenon/animals141
+    - https://www.kaggle.com/datasets/sbaghbidi/human-faces-object-detection
+    - https://www.kaggle.com/datasets/sanidhyak/human-face-emotions
