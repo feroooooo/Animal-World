@@ -17,3 +17,19 @@
     - https://www.kaggle.com/datasets/sharansmenon/animals141
     - https://www.kaggle.com/datasets/sbaghbidi/human-faces-object-detection
     - https://www.kaggle.com/datasets/sanidhyak/human-face-emotions
+  - 接口
+    - predict
+      - method
+        - post
+      - param
+        - file
+      - response
+        - prediction
+          - string
+          - 预测结果
+        - description
+          - string
+          - 描述
+        - is_animal
+          - bool
+          - 是否为动物

@@ -21,7 +21,12 @@ def predict(url):
     if response:
         ret = {}
         response_dict = response.json()
+        print(response_dict)
         ret['prediction'] = response_dict['result'][0]['name']
+        if ret['prediction'] == '非动物':
+            ret['is_animal'] = False
+        else:
+            ret['is_animal'] = True
         try:
             ret['description'] = response_dict['result'][0]['baike_info']['description']
         except:
