@@ -9,3 +9,5 @@ unpackage
 *.jpg
 .idea
 target
+node_modules
+uni_modules
