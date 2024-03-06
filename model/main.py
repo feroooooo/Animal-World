@@ -17,7 +17,14 @@ def classify():
     
     try:
         file = request.files['file']
-        filepath = './model/image.jpg'
+        server = True
+        if server:            
+            import uuid
+            _uuid = uuid.uuid1()
+            filepath = f'/var/www/html/static/animal/{_uuid}.jpg'
+            image_url = f"http://154.8.193.179:81/static/animal/{_uuid}.jpg"
+        else:
+            filepath = './model/image.jpg'
         file.save(filepath)
         img = Image.open(filepath).convert('RGB')
         # 将上传的图片文件转换为字节流
@@ -30,10 +37,12 @@ def classify():
     if use_api:
         import api
         prediction = api.predict(filepath)
+        prediction['image_url'] = image_url
         print(prediction)
         return prediction
     else:
         prediction = predict.predict(image=img)
+        prediction['image_url'] = image_url
         print(prediction)
         return jsonify({'prediction': prediction})
     

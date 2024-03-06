@@ -34,7 +34,7 @@
 <script setup>
 	import {ref} from "vue";
 
-	const backUrl="http://10.10.25.32:5000/predict";
+	const backUrl="http://154.8.193.179:5000/predict";
 	let imageUrl=ref("");
 	let baikeUrl=ref("");
 	let prediction=ref("");
