@@ -45,7 +45,7 @@
 			count: 1,
 			sizeType: ['compressed'],
 			sourceType: ['album', 'camera'],
-			success: res => {				
+			success: res => {
 				imageUrl.value = res.tempFilePaths[0];
 				console.log("FilePath:"+imageUrl.value);
 				
@@ -60,7 +60,7 @@
 					success: (uploadFileRes) => {
 						const response = JSON.parse(uploadFileRes.data);
 						console.log(response);
-						//{prediction:str,description:str,isAnimal:bool}
+						//{prediction:str,description:str,genus:str,isAnimal:bool}
 						prediction.value = response.prediction;
 						isAnimal.value = response.is_animal;
 						baikeUrl.value = response.baikeUrl;
