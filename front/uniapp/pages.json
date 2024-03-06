@@ -11,14 +11,6 @@
 		},
 		{
 			"path": "pages/history/history"
-		},
-		{
-			"path" : "pages/test/test",
-			"style" : 
-			{
-				"navigationBarTitleText" : "",
-				"enablePullDownRefresh" : false
-			}
 		}
 	],
 	"globalStyle": {
