@@ -63,7 +63,7 @@
 						//{prediction:str,description:str,genus:str,isAnimal:bool}
 						prediction.value = response.prediction;
 						isAnimal.value = response.is_animal;
-						baikeUrl.value = response.baikeUrl;
+						baikeUrl.value = response.baike_url;
 						
 						console.log(prediction.value);
 						uni.hideLoading();

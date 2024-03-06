@@ -27,6 +27,7 @@ def predict(url):
             if ret['prediction'] == '金钱豹':
                 ret['prediction'] = '花豹'
         ret['genus'] = crawl_wiki_data(ret['prediction'])
+        ret['baike_url'] = 'https://baike.baidu.com/item/' + ret['prediction']
         # try:
         #     ret['image_url'] = response_dict['result'][0]['baike_info']['image_url']
         #     ret['baike_url'] = response_dict['result'][0]['baike_info']['baike_url']
