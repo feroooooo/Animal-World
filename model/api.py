@@ -75,14 +75,26 @@ def crawl_wiki_data(animal):
     url='https://baike.baidu.com/item/' + animal      
     try:
         response = requests.get(url,headers=headers)
+        
         pos = response.text.find(r'属</dt>')
+        
+        if pos == -1:
+            pos = response.text.find(r'/item/' + animal)
+            url = 'https://baike.baidu.com' + response.text[pos:pos+30][:response.text[pos:pos+30].find('?')]
+            response = requests.get(url,headers=headers)
+            pos = response.text.find(r'属</dt>')
+        
         sub_string = response.text[pos+1:pos+300]
-        return sub_string[sub_string.find('/item/') + 6:sub_string.find('属')]
+        ret = sub_string[sub_string.find('/item/') + 6:sub_string.find('属')]
+        if len(ret) > 3:
+            ret = ''
+        return ret
     except Exception as e:
         print(e)
         return ''
 
 if __name__=="__main__":
     # get_access_token()
-    prediction = predict(r'C:\Custom\DataSet\WildLife\fox\00000035_224resized.jpg')
-    print(prediction)
+    # prediction = predict(r'C:\Custom\DataSet\WildLife\fox\00000035_224resized.jpg')
+    # print(prediction)
+    print(crawl_wiki_data('棕熊'))
