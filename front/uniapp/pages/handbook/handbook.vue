@@ -11,43 +11,60 @@
 	<view class="container">
 		<view class="item">
 			<image
-				:class="lock?'animal-img-lock':'animal-img-unlock'" 
-				src="/static/logo.png"
-				@click="baike('狗')"
+				:class="lock[0]?'animal-img-lock':'animal-img-unlock'" 
+				src="/static/images/book1.png"
+				mode="aspectFill"
+				@click="baike('狮子')"
 			/>
-			<text class="animal-name">狗</text>
+			<text class="animal-name">狮子</text>
 		</view>
 		<view class="item">
 			<image
-				:class="lock?'animal-img-lock':'animal-img-unlock'" 
-				src="/static/logo.png"
-				@click="baike('狗')"
+				:class="lock[1]?'animal-img-lock':'animal-img-unlock'" 
+				src="/static/images/book2.png"
+				@click="baike('兔子')"
 			/>
-			<text class="animal-name">狗</text>
+			<text class="animal-name">兔子</text>
 		</view>		
 		<view class="item">
 			<image
-				:class="lock?'animal-img-lock':'animal-img-unlock'" 
-				src="/static/logo.png"
-				@click="baike('狗')"
+				:class="lock[2]?'animal-img-lock':'animal-img-unlock'" 
+				src="/static/images/book3.png"
+				@click="baike('鹤')"
 			/>
-			<text class="animal-name">狗</text>
+			<text class="animal-name">鹤</text>
 		</view>		
 		<view class="item">
 			<image
-				:class="lock?'animal-img-lock':'animal-img-unlock'" 
-				src="/static/logo.png"
-				@click="baike('狗')"
+				:class="lock[3]?'animal-img-lock':'animal-img-unlock'" 
+				src="/static/images/book4.png"
+				@click="baike('猎豹')"
 			/>
-			<text class="animal-name">狗</text>
+			<text class="animal-name">猎豹</text>
+		</view>
+		<view class="item">
+			<image
+				:class="lock[4]?'animal-img-lock':'animal-img-unlock'" 
+				src="/static/images/book5.png"
+				@click="baike('北极熊')"
+			/>
+			<text class="animal-name">北极熊</text>
+		</view>
+		<view class="item">
+			<image
+				:class="lock[5]?'animal-img-lock':'animal-img-unlock'" 
+				src="/static/images/book6.png"
+				@click="baike('雪豹')"
+			/>
+			<text class="animal-name">雪豹</text>
 		</view>
 	</view>
 </template>
 
 <script setup>
 import {ref} from "vue";
-let userCnt = ref(6);
-let lock = ref(true);
+let userCnt = ref(0);
+let lock = ref([true,true,true,true,true,true]);
 
 function baike(name){
 		// #ifdef H5
@@ -97,7 +114,7 @@ export default {
       //模拟从服务器获取数据时的延时
       setTimeout(() => {
         //模拟服务器返回数据，如果数据格式和标准格式不同，需自行按下面的格式拼接
-		let userCnt = 6;
+		let userCnt = 0;
 		let totalCnt = 10;
         let res = {
             series: [
@@ -141,8 +158,8 @@ export default {
 	.animal-img-lock{
 		width: 100px;
 		height: 100px;
-		filter: contrast(50%);
 		filter: brightness(50%);
+		filter: grayscale(100%);
 	}
 	.animal-img-unlock{
 		width: 100px;
