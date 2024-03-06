@@ -24,6 +24,8 @@ def predict(url):
             ret['is_animal'] = False
         else:
             ret['is_animal'] = True
+            if ret['prediction'] == '金钱豹':
+                ret['prediction'] = '花豹'
         ret['genus'] = crawl_wiki_data(ret['prediction'])
         # try:
         #     ret['image_url'] = response_dict['result'][0]['baike_info']['image_url']
