@@ -1,13 +1,9 @@
+import requests
+import base64
+import json
+
+# 动物识别
 def predict(url):
-    # encoding:utf-8
-
-    import requests
-    import base64
-
-    '''
-    动物识别
-    '''
-
     request_url = "https://aip.baidubce.com/rest/2.0/image-classify/v1/animal"
     # 二进制方式打开图片所属的[本地文件]
     f = open(url, 'rb')
@@ -28,17 +24,34 @@ def predict(url):
         else:
             ret['is_animal'] = True
         try:
+            ret['image_url'] = response_dict['result'][0]['baike_info']['image_url']
+            ret['baike_url'] = response_dict['result'][0]['baike_info']['baike_url']
             ret['description'] = response_dict['result'][0]['baike_info']['description']
+
+            # 删除空格
+            no_spaces_string = ret['description'].replace(" ", "")
+            # 查找'属'字符的位置
+            pos_shu = no_spaces_string.find('属')
+            # 在'属'字符之前查找'科'或'、'字符的位置
+            pos_ke = no_spaces_string.rfind('科', 0, pos_shu)
+            pos_dou = no_spaces_string.rfind('、', 0, pos_shu)
+            # 使用两个位置中较大的那一个作为起始位置
+            start_pos = max(pos_ke, pos_dou) + 1
+            # 提取子字符串
+            ret['genus'] = no_spaces_string[start_pos:pos_shu]
+        
         except:
-            ret['description'] = '暂无'
+            ret['image_url'] = ''
+            ret['baike_url'] = ''
+            ret['description'] = ''
+            ret['genus'] = ''
         return ret
     else:
         return {}
 
-def get_access_token():
 
-    import requests
-    import json
+# 获取token
+def get_access_token():
     url = "https://aip.baidubce.com/oauth/2.0/token?grant_type=client_credentials&client_id=lLBFhgAQlV6KpgNYf0NCX3oR&client_secret=J5STHfbFdPiw9X8JgCO2ClfbFCcTAuAf"
     
     payload = ""
@@ -50,7 +63,21 @@ def get_access_token():
     response = requests.request("POST", url, headers=headers, data=payload)
     
     print(response.text)
+    
+
+# 爬取属
+def crawl_wiki_data(animal):
+    headers = { 
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36'
+    }
+    url='https://baike.baidu.com/item/' + animal      
+    try:
+        response = requests.get(url,headers=headers)
+        print(response.text)
+         
+    except Exception as e:
+        print(e)
 
 if __name__=="__main__":
     # get_access_token()
-    print(predict(r'C:\Custom\DataSet\WildLife\fox\00000001_224resized.jpg'))   
+    print(predict(r'C:\Custom\DataSet\WildLife\fox\00000035_224resized.jpg'))   
