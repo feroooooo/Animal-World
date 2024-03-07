@@ -130,7 +130,10 @@ export default {
 		let genus = tmp ? JSON.parse(tmp) : {"猫":false,"狗":false,"兔":false,"鹤":false,"熊":false,"豹":false};
 		Object.entries(genus).forEach(([key,value])=>{
 			totalCnt++;
-			if(value){userCnt++;}
+			if(value && key !==""){
+				userCnt++;
+				console.log(key);
+			}
 		});
 
         let res = {
