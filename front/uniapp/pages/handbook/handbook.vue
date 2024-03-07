@@ -11,24 +11,24 @@
 	<view class="container">
 		<view class="item">
 			<image
-				:class="lock[0]?'animal-img-lock':'animal-img-unlock'" 
-				src="/static/images/book1.png"
+				:class="unlock['狗']?'animal-img-unlock':'animal-img-lock'" 
+				src="/static/images/book1.jpg"
 				mode="aspectFill"
-				@click="baike('狮子')"
+				@click="baike('狗')"
 			/>
-			<text class="animal-name">狮子</text>
+			<text class="animal-name">狗</text>
 		</view>
 		<view class="item">
 			<image
-				:class="lock[1]?'animal-img-lock':'animal-img-unlock'" 
+				:class="unlock['兔']?'animal-img-unlock':'animal-img-lock'" 
 				src="/static/images/book2.png"
-				@click="baike('兔子')"
+				@click="baike('兔')"
 			/>
-			<text class="animal-name">兔子</text>
+			<text class="animal-name">兔</text>
 		</view>		
 		<view class="item">
 			<image
-				:class="lock[2]?'animal-img-lock':'animal-img-unlock'" 
+				:class="unlock['鹤']?'animal-img-unlock':'animal-img-lock'" 
 				src="/static/images/book3.png"
 				@click="baike('鹤')"
 			/>
@@ -36,35 +36,43 @@
 		</view>		
 		<view class="item">
 			<image
-				:class="lock[3]?'animal-img-lock':'animal-img-unlock'" 
+				:class="unlock['豹']?'animal-img-unlock':'animal-img-lock'" 
 				src="/static/images/book4.png"
-				@click="baike('猎豹')"
+				@click="baike('豹')"
 			/>
-			<text class="animal-name">猎豹</text>
+			<text class="animal-name">豹</text>
 		</view>
 		<view class="item">
 			<image
-				:class="lock[4]?'animal-img-lock':'animal-img-unlock'" 
+				:class="unlock['熊']?'animal-img-unlock':'animal-img-lock'" 
 				src="/static/images/book5.png"
-				@click="baike('北极熊')"
+				@click="baike('熊')"
 			/>
-			<text class="animal-name">北极熊</text>
+			<text class="animal-name">熊</text>
 		</view>
 		<view class="item">
 			<image
-				:class="lock[5]?'animal-img-lock':'animal-img-unlock'" 
-				src="/static/images/book6.png"
-				@click="baike('雪豹')"
+				:class="unlock['猫']?'animal-img-unlock':'animal-img-lock'" 
+				src="/static/images/book6.jpg"
+				@click="baike('猫')"
 			/>
-			<text class="animal-name">雪豹</text>
+			<text class="animal-name">猫</text>
 		</view>
 	</view>
 </template>
 
 <script setup>
-import {ref} from "vue";
+import {onMounted, ref} from "vue";
 let userCnt = ref(0);
-let lock = ref([true,true,true,true,true,true]);
+let unlock = ref({"猫":false,"狗":false,"兔":false,"鹤":false,"熊":false,"豹":false});
+
+onMounted(()=>{
+	let genus = JSON.parse(uni.getStorageSync("genus"));
+	Object.entries(genus).forEach(([key,value])=>{
+		if(value){unlock.value[key]=true;}
+	});
+	console.log(unlock.value);
+})
 
 function baike(name){
 		// #ifdef H5
@@ -115,15 +123,22 @@ export default {
       setTimeout(() => {
         //模拟服务器返回数据，如果数据格式和标准格式不同，需自行按下面的格式拼接
 		let userCnt = 0;
-		let totalCnt = 10;
+		let totalCnt = 0;
+		let genus = JSON.parse(uni.getStorageSync("genus"));
+		console.log(genus)
+		Object.entries(genus).forEach(([key,value])=>{
+			totalCnt++;
+			if(value){userCnt++;}
+		});
+
         let res = {
             series: [
               {
-                data: [{"name":"一班","value":userCnt,"labelShow":false},{"name":"二班","value":totalCnt-userCnt,"labelShow":false}]
+                data: [{"name":"一","value":userCnt,"labelShow":false},{"name":"二","value":totalCnt-userCnt,"labelShow":false}]
               }
             ]
           };
-		this.opts.subtitle.name = `${(userCnt / totalCnt) * 100}%`;
+		this.opts.subtitle.name = `${Math.floor((userCnt / totalCnt) * 100)}%`;
         this.chartData = JSON.parse(JSON.stringify(res));
       }, 500);
     },

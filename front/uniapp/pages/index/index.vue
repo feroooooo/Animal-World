@@ -60,13 +60,46 @@
 					success: (uploadFileRes) => {
 						const response = JSON.parse(uploadFileRes.data);
 						console.log(response);
-						//{prediction:str,description:str,genus:str,isAnimal:bool}
 						prediction.value = response.prediction;
 						isAnimal.value = response.is_animal;
 						baikeUrl.value = response.baike_url;
 						
 						console.log(prediction.value);
 						uni.hideLoading();
+						
+						let date = new Date();
+						let info = {
+							"name":response.prediction,
+							"genus":response.genus,
+							"image_url":response.image_url,
+							"baike_url":response.baike_url,
+							"timestamp": date.getTime()
+						};
+						
+						try{
+							//历史记录存储
+							let history = uni.getStorageSync("history");
+							let tmp = history ? JSON.parse(history) : [];
+							tmp.push(info);
+							uni.setStorageSync("history",JSON.stringify(tmp));
+							//动物图鉴存储
+							let genus = uni.getStorageSync("genus");
+							let tmp2 = genus ? JSON.parse(genus) : {"猫":false,"狗":false,"兔":false,"鹤":false,"熊":false,"豹":false};
+							
+							if(!tmp2[response.genus]){
+								uni.showToast({
+									title: '图鉴解锁',
+									icon: 'success',
+									duration: 2000
+								})  
+							}
+							
+							tmp2[response.genus] = true;
+							uni.setStorageSync("genus",JSON.stringify(tmp2));
+						}catch(e){
+							console.log("存储失败");
+							console.log(e);
+						}
 					},
 					fail: (uploadFileErr) => {
 					console.log(uploadFileErr);
