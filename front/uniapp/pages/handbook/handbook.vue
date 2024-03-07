@@ -62,12 +62,14 @@
 </template>
 
 <script setup>
-import {onMounted, ref} from "vue";
+import {ref} from "vue";
+import {onShow} from "@dcloudio/uni-app";
 let userCnt = ref(0);
 let unlock = ref({"猫":false,"狗":false,"兔":false,"鹤":false,"熊":false,"豹":false});
 
-onMounted(()=>{
-	let genus = JSON.parse(uni.getStorageSync("genus"));
+onShow(()=>{
+	let tmp = uni.getStorageSync("genus");
+	let genus = tmp ? JSON.parse(tmp) : {"猫":false,"狗":false,"兔":false,"鹤":false,"熊":false,"豹":false};
 	Object.entries(genus).forEach(([key,value])=>{
 		if(value){unlock.value[key]=true;}
 	});
@@ -114,7 +116,7 @@ export default {
       }
     };
   },
-  onReady() {
+  onShow() {
     this.getServerData();
   },
   methods: {
@@ -124,8 +126,8 @@ export default {
         //模拟服务器返回数据，如果数据格式和标准格式不同，需自行按下面的格式拼接
 		let userCnt = 0;
 		let totalCnt = 0;
-		let genus = JSON.parse(uni.getStorageSync("genus"));
-		console.log(genus)
+		let tmp = uni.getStorageSync("genus");
+		let genus = tmp ? JSON.parse(tmp) : {"猫":false,"狗":false,"兔":false,"鹤":false,"熊":false,"豹":false};
 		Object.entries(genus).forEach(([key,value])=>{
 			totalCnt++;
 			if(value){userCnt++;}

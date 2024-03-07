@@ -25,10 +25,12 @@
 </template>
 
 <script setup>
-	import {ref,onMounted} from "vue";
+	import {ref} from "vue";
+	import {onShow} from "@dcloudio/uni-app";
+	
 	let history = ref([]);
 	
-	onMounted(()=>{
+	onShow(()=>{
 		let tmp = uni.getStorageSync("history");
 		if(!tmp){
 			tmp = [];
@@ -41,9 +43,14 @@
 	function deleteall(){
 		try {
 			uni.removeStorageSync("history");
+			uni.removeStorageSync("genus");
 		} catch (e) {
 			console.log("删除失败");
 		}
+		
+		//#ifdef H5
+		window.location.reload();
+		//#endif
 	}
 	
 	function baike(url){
