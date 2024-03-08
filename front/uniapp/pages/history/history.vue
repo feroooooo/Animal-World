@@ -16,7 +16,7 @@
 				
 				<button class="intro" @click="baike(info.baike_url)">查看详情</button>
 				
-				<text class="time">时间：{{formatDate(info.timestamp)}}
+				<text class="time">时间：{{info.timestamp}}
 				</text>
 				
 			</view>
@@ -58,22 +58,6 @@
 		window.location.href=url;
 		// #endif
 	}
-	
-function formatDate(timestamp) {
-	let date = new Date(timestamp * 1000);
-	let y = date.getFullYear();
-	let MM = date.getMonth() + 1;
-	MM = MM < 10 ? "0" + MM : MM;
-	let d = date.getDate();
-	d = d < 10 ? "0" + d : d;
-	let h = date.getHours();
-	h = h < 10 ? "0" + h : h;
-	let m = date.getMinutes();
-	m = m < 10 ? "0" + m : m;
-	let s = date.getSeconds();
-	s = s < 10 ? "0" + s : s;
-	return y + "-" + MM + "-" + d + " " + h + ":" + m + ":" + s;
-}
 </script>
 
 <style>

@@ -25,7 +25,7 @@
 		</view>
 
 		<button class="predict-btn" @click="predict">
-			<image src="/static/icons/camera.png" class="btn-img" mode="aspectFit"></image>
+			<image src="../../static/icons/photo.png" class="btn-img" mode="aspectFit"></image>
 			拍照识别
 		</button>
 	</view>
@@ -67,13 +67,12 @@
 						console.log(prediction.value);
 						uni.hideLoading();
 						
-						let date = new Date();
 						let info = {
 							"name":response.prediction,
 							"genus":response.genus,
 							"image_url":response.image_url,
 							"baike_url":response.baike_url,
-							"timestamp": date.getTime()
+							"timestamp": Date.parse(new Date()) / 1000
 						};
 						
 						try{
@@ -84,11 +83,11 @@
 							uni.setStorageSync("history",JSON.stringify(tmp));
 							//动物图鉴存储
 							let genus = uni.getStorageSync("genus");
-							let tmp2 = genus ? JSON.parse(genus) : {"猫":false,"狗":false,"兔":false,"鹤":false,"熊":false,"豹":false};
+							let tmp2 = genus ? JSON.parse(genus) : {"大猩猩":false,"狗":false,"兔":false,"鹤":false,"熊":false,"豹":false};
 							
 							if(!tmp2[response.genus]){
 								uni.showToast({
-									title: '图鉴解锁',
+									title: '图鉴解锁: '+info.genus,
 									icon: 'success',
 									duration: 2000
 								})  
@@ -189,7 +188,7 @@ swiper-item{
 	font-size:8px;
 	line-height:22px;
 	left: 50px;
-	background-color: #A4ADB3;
+	background-color: #009183;
 	border-color:#BBBBBB;
 	color:white;
 	
@@ -205,7 +204,7 @@ swiper-item{
 	align-items: center;
 	text-align:center;
 	justify-content: center;
-	background-color:#93D2F3;
+	background-color:#80bb5d;
 	line-height:40px;
 	font-size:15px;
 }

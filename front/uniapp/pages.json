@@ -14,14 +14,6 @@
 		},
 		{
 			"path": "pages/history/history"
-		},
-		{
-			"path" : "pages/test/test",
-			"style" : 
-			{
-				"navigationBarTitleText" : "",
-				"enablePullDownRefresh" : false
-			}
 		}
 	],
 	"globalStyle": {
@@ -34,24 +26,25 @@
 		"backgroundColor": "#F8F8F8"
 	},
 	"tabBar": {
+		"selectedColor": "#008c00",
 		"list":[
 			{
 				"pagePath": "pages/index/index",
 				"text":"首页",
 				"iconPath": "/static/icons/index_gray.png",
-				"selectedIconPath": "/static/icons/index_blue.png"
+				"selectedIconPath": "/static/icons/index_green.png"
 			},
 			{
 				"pagePath": "pages/handbook/handbook",
 				"text":"图鉴",
 				"iconPath": "/static/icons/handbook_gray.png",
-				"selectedIconPath": "/static/icons/handbook_blue.png"
+				"selectedIconPath": "/static/icons/handbook_green.png"
 			},
 			{
 				"pagePath": "pages/history/history",
 				"text":"历史记录",
 				"iconPath": "/static/icons/history_gray.png",
-				"selectedIconPath": "/static/icons/history_blue.png"
+				"selectedIconPath": "/static/icons/history_green.png"
 			}
 		]
 	},
