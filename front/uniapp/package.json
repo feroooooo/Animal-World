@@ -1,5 +1,6 @@
 {
   "dependencies": {
-    "echarts": "^5.5.0"
+    "echarts": "^5.5.0",
+    "uniapp-echarts": "^1.0.2"
   }
 }
