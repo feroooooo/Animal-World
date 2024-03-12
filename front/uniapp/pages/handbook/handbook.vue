@@ -7,7 +7,7 @@
 			:tooltipShow=false
 		/>
 	</view>
-	<view class="intro">恭喜你已成功发现{{userCnt}}种动物！</view>
+	<view class="intro">你已成功发现{{userCnt}}/{{totalCnt}}种动物！</view>
 	<view class="container">
 		<view class="item">
 			<image
@@ -16,7 +16,7 @@
 				mode="aspectFill"
 				@click="baike('犬')"
 			/>
-			<text class="animal-name">犬</text>
+			<text class="animal-name">犬属</text>
 		</view>
 		<view class="item">
 			<image
@@ -24,15 +24,15 @@
 				src="/static/images/book2.png"
 				@click="baike('兔')"
 			/>
-			<text class="animal-name">兔</text>
+			<text class="animal-name">兔属</text>
 		</view>		
 		<view class="item">
 			<image
-				:class="unlock['鹤']?'animal-img-unlock':'animal-img-lock'" 
+				:class="unlock['灰鹤']?'animal-img-unlock':'animal-img-lock'" 
 				src="/static/images/book3.png"
-				@click="baike('鹤')"
+				@click="baike('灰鹤')"
 			/>
-			<text class="animal-name">鹤</text>
+			<text class="animal-name">灰鹤属</text>
 		</view>		
 		<view class="item">
 			<image
@@ -40,7 +40,7 @@
 				src="/static/images/book4.png"
 				@click="baike('豹')"
 			/>
-			<text class="animal-name">豹</text>
+			<text class="animal-name">豹属</text>
 		</view>
 		<view class="item">
 			<image
@@ -48,7 +48,7 @@
 				src="/static/images/book5.png"
 				@click="baike('熊')"
 			/>
-			<text class="animal-name">熊</text>
+			<text class="animal-name">熊属</text>
 		</view>
 		<view class="item">
 			<image
@@ -56,7 +56,7 @@
 				src="/static/images/book6.png"
 				@click="baike('大猩猩')"
 			/>
-			<text class="animal-name">大猩猩</text>
+			<text class="animal-name">大猩猩属</text>
 		</view>
 	</view>
 </template>
@@ -64,15 +64,14 @@
 <script setup>
 import {ref} from "vue";
 import {onShow} from "@dcloudio/uni-app";
-let unlock = ref({"大猩猩":false,"狗":false,"兔":false,"鹤":false,"熊":false,"豹":false});
+let unlock = ref({"大猩猩":false,"犬":false,"兔":false,"灰鹤":false,"熊":false,"豹":false});
 
 onShow(()=>{
 	let tmp = uni.getStorageSync("genus");
-	let genus = tmp ? JSON.parse(tmp) : {"大猩猩":false,"狗":false,"兔":false,"鹤":false,"熊":false,"豹":false};
+	let genus = tmp ? JSON.parse(tmp) : {"大猩猩":false,"犬":false,"兔":false,"灰鹤":false,"熊":false,"豹":false};
 	Object.entries(genus).forEach(([key,value])=>{
 		if(value){unlock.value[key]=true;}
 	});
-	console.log(unlock.value);
 })
 
 function baike(name){
@@ -128,13 +127,14 @@ export default {
 		this.userCnt = 0;
 		this.totalCnt = 0;
 		let tmp = uni.getStorageSync("genus");
-		let genus = tmp ? JSON.parse(tmp) : {"大猩猩":false,"狗":false,"兔":false,"鹤":false,"熊":false,"豹":false};
+		let genus = tmp ? JSON.parse(tmp) : {"大猩猩":false,"犬":false,"兔":false,"灰鹤":false,"熊":false,"豹":false};
 		Object.entries(genus).forEach(([key,value])=>{
-			this.totalCnt++;
-			if(value && key !==""){
-				this.userCnt++;
-				console.log(key);
+			if(key!==""){
+				if(value){
+					this.userCnt++;
+				}
 			}
+			this.totalCnt++;
 		});
 
         let res = {

@@ -83,11 +83,11 @@
 							uni.setStorageSync("history",JSON.stringify(tmp));
 							//动物图鉴存储
 							let genus = uni.getStorageSync("genus");
-							let tmp2 = genus ? JSON.parse(genus) : {"大猩猩":false,"狗":false,"兔":false,"鹤":false,"熊":false,"豹":false};
+							let tmp2 = genus ? JSON.parse(genus) : {"大猩猩":false,"犬":false,"兔":false,"灰鹤":false,"熊":false,"豹":false};
 							
-							if(!tmp2[response.genus]){
+							if(response.genus!=="" && !tmp2[response.genus]){
 								uni.showToast({
-									title: '图鉴解锁: '+info.genus,
+									title: '图鉴解锁: '+info.genus+'属',
 									icon: 'success',
 									duration: 2000
 								})  
