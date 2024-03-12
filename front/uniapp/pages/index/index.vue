@@ -66,13 +66,13 @@
 						
 						console.log(prediction.value);
 						uni.hideLoading();
-						
+						let nowTime = Date.parse(new Date()) / 1000;
 						let info = {
 							"name":response.prediction,
 							"genus":response.genus,
 							"image_url":response.image_url,
 							"baike_url":response.baike_url,
-							"timestamp": Date.parse(new Date()) / 1000
+							"timestamp": nowTime
 						};
 						
 						try{
