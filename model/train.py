@@ -181,7 +181,7 @@ if __name__ == "__main__":
     model = model.to(device)
     
     # 定义损失函数和优化器
-    criterion = nn.CrossEntropyLoss()
+    criterion = nn.CrossEntropyLoss().to(device)
     optimizer = optim.Adam(model.parameters(), lr=learning_rate)
     scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=50, gamma=0.1)
     
