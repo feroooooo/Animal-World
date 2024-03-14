@@ -1,7 +1,10 @@
 {
 	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
 		{
-			"path":"pages/splash/splash"
+			"path":"pages/splash/splash",
+			"style": {
+				"navigationBarTitleText": "动物世界"
+			}
 		},
 		{
 			"path": "pages/index/index",
@@ -10,20 +13,27 @@
 			}
 		},
 		{
-			"path": "pages/handbook/handbook"
+			"path": "pages/handbook/handbook",
+			"style": {
+				"navigationBarTitleText": "动物世界"
+			}
 		},
 		{
-			"path": "pages/history/history"
+			"path": "pages/history/history",
+			"style": {
+				"navigationBarTitleText": "动物世界"
+			}
 		}
 	],
 	"globalStyle": {
-		"app-plus":{
-				"titleNView":false
-		},
-		"navigationBarTextStyle": "black",
-		"navigationBarTitleText": "uni-app",
-		"navigationBarBackgroundColor": "#F8F8F8",
-		"backgroundColor": "#F8F8F8"
+		"style": {
+			"app-plus":{
+					"titleNView":true
+			},
+			"navigationBarTextStyle": "black",
+			"navigationBarBackgroundColor": "#ffffff",
+			"backgroundColor": "#ffffff"
+			}
 	},
 	"tabBar": {
 		"selectedColor": "#008c00",

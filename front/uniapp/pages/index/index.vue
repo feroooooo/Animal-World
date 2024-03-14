@@ -33,7 +33,8 @@
 
 <script setup>
 	import {ref} from "vue";
-
+	import {imageCompress} from "@/static/utils/imageUtils.js";
+	
 	const backUrl="http://154.8.193.179:5000/predict";
 	let imageUrl=ref("");
 	let baikeUrl=ref("");
@@ -46,77 +47,76 @@
 			sizeType: ['compressed'],
 			sourceType: ['album', 'camera'],
 			success: res => {
-				imageUrl.value = res.tempFilePaths[0];
-				console.log("FilePath:"+imageUrl.value);
-				
 				uni.showLoading({
-				        title: '加载中...'
+						title: '加载中...'
 				});
 				
-				uni.uploadFile({
-					url:backUrl,
-					filePath: imageUrl.value,
-					name:"file",
-					success: (uploadFileRes) => {
-						const response = JSON.parse(uploadFileRes.data);
-						console.log(response);
-						prediction.value = response.prediction;
-						isAnimal.value = response.is_animal;
-						baikeUrl.value = response.baike_url;
-						
-						console.log(prediction.value);
-						uni.hideLoading();
-						let nowTime = Date.parse(new Date()) / 1000;
-						let info = {
-							"name":response.prediction,
-							"genus":response.genus,
-							"image_url":response.image_url,
-							"baike_url":response.baike_url,
-							"timestamp": nowTime
-						};
-						
-						try{
-							//历史记录存储
-							let history = uni.getStorageSync("history");
-							let tmp = history ? JSON.parse(history) : [];
-							tmp.push(info);
-							uni.setStorageSync("history",JSON.stringify(tmp));
-							//动物图鉴存储
-							let genus = uni.getStorageSync("genus");
-							let tmp2 = genus ? JSON.parse(genus) : {"大猩猩":false,"犬":false,"兔":false,"灰鹤":false,"熊":false,"豹":false};
+				imageCompress(res.tempFilePaths[0]).then((base64) => {
+					imageUrl.value = base64;
+					console.log("compress success!");
+					
+					uni.uploadFile({
+						url:backUrl,
+						filePath: imageUrl.value,
+						name:"file",
+						success: (uploadFileRes) => {
+							const response = JSON.parse(uploadFileRes.data);
+							console.log(response);
+							prediction.value = response.prediction;
+							isAnimal.value = response.is_animal;
+							baikeUrl.value = response.baike_url;
 							
-							if(response.genus!=="" && !tmp2[response.genus]){
-								uni.showToast({
-									title: '图鉴解锁: '+info.genus+'属',
-									icon: 'success',
-									duration: 2000
-								})  
+							console.log(prediction.value);
+							uni.hideLoading();
+							let nowTime = Date.parse(new Date()) / 1000;
+							let info = {
+								"name":response.prediction,
+								"genus":response.genus,
+								"image_url":response.image_url,
+								"baike_url":response.baike_url,
+								"timestamp": nowTime
+							};
+
+							try{
+								//历史记录存储
+								let history = uni.getStorageSync("history");
+								let tmp = history ? JSON.parse(history) : [];
+								tmp.push(info);
+								uni.setStorageSync("history",JSON.stringify(tmp));
+								//动物图鉴存储
+								let genus = uni.getStorageSync("genus");
+								let tmp2 = genus ? JSON.parse(genus) : {"大猩猩":false,"犬":false,"兔":false,"灰鹤":false,"熊":false,"豹":false};
+								
+								if(response.genus!=="" && !tmp2[response.genus]){
+									uni.showToast({
+										title: '图鉴解锁: '+info.genus+'属',
+										icon: 'success',
+										duration: 2000
+									})  
+								}
+								
+								tmp2[response.genus] = true;
+								uni.setStorageSync("genus",JSON.stringify(tmp2));
+							}catch(e){
+								console.log("存储失败");
+								console.log(e);
 							}
-							
-							tmp2[response.genus] = true;
-							uni.setStorageSync("genus",JSON.stringify(tmp2));
-						}catch(e){
-							console.log("存储失败");
-							console.log(e);
+						},
+						fail: (uploadFileErr) => {
+						console.log(uploadFileErr);
+							uni.showModal({
+								content: '上传失败',
+								showCancel:false,
+								confirmColor:"#000000"
+							});
+							uni.hideLoading();
 						}
-					},
-					fail: (uploadFileErr) => {
-					console.log(uploadFileErr);
-						uni.showModal({
-							content: '上传失败',
-							showCancel:false,
-							confirmColor:"#000000"
-						});
-						uni.hideLoading();
-					}
-				});
+					});
+				}).catch((error) => {
+					console.log("图片压缩失败！"+error);
+				})
 			},
 			fail: res=>{
-				uni.showModal({
-					title: '请先选择图片',
-					icon: 'none'
-				});
-				console.log(res);
 				return;
 			}
 		});
