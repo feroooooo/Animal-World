@@ -133,8 +133,8 @@ export default {
 				if(value){
 					this.userCnt++;
 				}
+				this.totalCnt++;
 			}
-			this.totalCnt++;
 		});
 
         let res = {

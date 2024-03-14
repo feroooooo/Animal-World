@@ -77,7 +77,10 @@ function formatDate(timestamp) {
 </script>
 
 <style>
+button::after{ border: none;} 
+
 .delete-btn{
+	background-color: transparent;
 	width:120px;
 	height:40px;
 	display:flex;
@@ -108,7 +111,7 @@ function formatDate(timestamp) {
 	flex-direction: row;
 	justify-content: space-between;
 	border-radius: 5px;
-	box-shadow: 1px 1px 2px 2px rgba(0, 0, 0, 0.1);
+	box-shadow: 1px 1px 2px 0.5px rgba(0, 0, 0, 0.1);
 }
 
 .picture{
@@ -135,9 +138,9 @@ function formatDate(timestamp) {
 	display:flex;
 	justify-content: flex-start;	
 	width:90px;
-	height:40px;
+	height:30px;
 	margin-left: 0rpx;
-	line-height:40px;
+	line-height:30px;
 	font-size:15px;
 }
 			
