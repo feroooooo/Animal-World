@@ -3,36 +3,45 @@
 		{
 			"path":"pages/splash/splash",
 			"style": {
-				"navigationBarTitleText": "动物世界"
+				"app-plus":{
+					"titleNView":false
+				}
 			}
 		},
 		{
 			"path": "pages/index/index",
 			"style": {
-				"navigationBarTitleText": "动物世界"
+				"app-plus":{
+					"titleNView":false
+				}
 			}
 		},
 		{
 			"path": "pages/handbook/handbook",
 			"style": {
-				"navigationBarTitleText": "动物世界"
+				"app-plus":{
+					"titleNView":false
+				}
 			}
 		},
 		{
 			"path": "pages/history/history",
 			"style": {
-				"navigationBarTitleText": "动物世界"
+				"app-plus":{
+					"titleNView":false
+				}
 			}
 		}
 	],
 	"globalStyle": {
 		"style": {
 			"app-plus":{
-					"titleNView":true
+					"titleNView":false
 			},
 			"navigationBarTextStyle": "black",
 			"navigationBarBackgroundColor": "#ffffff",
-			"backgroundColor": "#ffffff"
+			"backgroundColor": "#ffffff",
+			"navigationBarTitleText": "动物世界"
 			}
 	},
 	"tabBar": {
